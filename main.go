@@ -8,6 +8,7 @@ import (
 )
 
 func homehandler(w http.ResponseWriter, r *http.Request) {
+	bio := `&lt;script&gt;alert(&quot;Hi!&quot;);&lt;/script&gt;`
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprint(w, "<h1>Welcome to my awsome site!</h1>")
 }
