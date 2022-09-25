@@ -35,14 +35,7 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func faqHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprint(w, `<h1>FAQ Page</h1>
-	<ul>
-		<li><strong>Is there a free version?</strong> Yes! We offer a free trial for 30 days on any paid plans</li>
-		<li><Strong>What are your support hours?</strong> We have support staff answering emails 24/7, though response time may be a bit slower on weekens.</li>
-		<li><strong>How do I contact support?</strong></li> Email us - <a href="gideon10@gmail.com" >support@gideon</a></li>
-	</ul>
-	`)
+	executeTemplate(w, "templates/faq.gohtml")
 }
 
 func main() {
