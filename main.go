@@ -2,32 +2,26 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
 	"net/http"
 
+	"github.com/Gideon-isa/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 )
 
-func executeTemplate(w http.ResponseWriter, filePath string) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	tpl, err := template.ParseFiles(filePath)
+func executeTemplate(w http.ResponseWriter, filepath string) {
+	t, err := views.Parse(filepath)
 	if err != nil {
 		log.Printf("parsing templates: %v", err)
 		http.Error(w, "There was an error parsing the templates", http.StatusInternalServerError)
 		return
 	}
 
-	err = tpl.Execute(w, nil)
-	if err != nil {
-		log.Printf("excuting templates: %v", err)
-		http.Error(w, "There was an error excuting the templates", http.StatusInternalServerError)
-		return
-	}
+	t.Execute(w, nil)
+
 }
 func homehandler(w http.ResponseWriter, r *http.Request) {
 	executeTemplate(w, "templates/home.gohtml")
-
 }
 
 func contactHandler(w http.ResponseWriter, r *http.Request) {
