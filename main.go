@@ -2,41 +2,37 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
+	"github.com/Gideon-isa/lenslocked/controllers"
 	"github.com/Gideon-isa/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 )
 
-func executeTemplate(w http.ResponseWriter, filepath string) {
-	t, err := views.Parse(filepath)
-	if err != nil {
-		log.Printf("parsing templates: %v", err)
-		http.Error(w, "There was an error parsing the templates", http.StatusInternalServerError)
-		return
-	}
-
-	t.Execute(w, nil)
-
-}
-func homehandler(w http.ResponseWriter, r *http.Request) {
-	executeTemplate(w, "templates/home.gohtml")
-}
-
-func contactHandler(w http.ResponseWriter, r *http.Request) {
-	executeTemplate(w, "templates/contact.gohtml")
-}
-
-func faqHandler(w http.ResponseWriter, r *http.Request) {
-	executeTemplate(w, "templates/faq.gohtml")
-}
-
 func main() {
+	// Parse the template
 	r := chi.NewRouter()
-	r.Get("/", homehandler)
-	r.Get("/contact", contactHandler)
-	r.Get("/faq", faqHandler)
+	//
+	tpl, err := views.Parse("templates/home.gohtml")
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/", controllers.StaticHandler(tpl))
+
+	//
+	tpl, err = views.Parse("templates/contact.gohtml")
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/contact", controllers.StaticHandler(tpl))
+
+	//
+	tpl, err = views.Parse("templates/faq.gohtml")
+	if err != nil {
+		panic(err)
+	}
+	r.Get("/faq", controllers.StaticHandler(tpl))
+
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Page not found", http.StatusNotFound)
 	})
