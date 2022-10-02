@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Gideon-isa/lenslocked/controllers"
+	"github.com/Gideon-isa/lenslocked/templates"
 	"github.com/Gideon-isa/lenslocked/views"
 	"github.com/go-chi/chi/v5"
 )
@@ -13,15 +14,15 @@ func main() {
 	// Parse the template
 	r := chi.NewRouter()
 	//
-	tpl := views.Must(views.Parse("templates/home.gohtml"))
+	tpl := views.Must(views.ParseFS(templates.FS, "home.gohtml"))
 	r.Get("/", controllers.StaticHandler(tpl))
 
 	//
-	tpl = views.Must(views.Parse("templates/contact.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(tpl))
 
 	//
-	tpl = views.Must(views.Parse("templates/faq.gohtml"))
+	tpl = views.Must(views.ParseFS(templates.FS, "faq.gohtml"))
 	r.Get("/faq", controllers.StaticHandler(tpl))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
